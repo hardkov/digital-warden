@@ -1,6 +1,8 @@
 from flask import Flask, render_template, Response
 import cv2
 
+from detection import detectHuman
+
 app = Flask(__name__)
 
 camera = cv2.VideoCapture(0)
@@ -10,11 +12,13 @@ def gen_frames():
         success, frame = camera.read()
         if not success:
             break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        frame = detectHuman(frame)
+
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route('/video_feed')
@@ -29,3 +33,6 @@ def index():
 
 if __name__ == '__main__':
     app.run()
+
+camera.release()
+cv2.destroyAllWindows()
