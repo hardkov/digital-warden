@@ -1,4 +1,5 @@
 import cv2
+import base64
 
 from detection import detectHuman
 
@@ -29,16 +30,16 @@ def gen_frames():
             break
         
         frame, count = detectHuman(frame)
-
-        currentHumanCount = count
         
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
 
-        # if count > currentHumanCount:
-        #     # save image and send to the client
-        #     socket.emit("imgFeed", frame)
-        #     pass
+        if count > currentHumanCount:
+            # save image and send to the client
+            print("imgFeed")
+            socket.emit("imgFeed", base64.b64encode(buffer))
+
+        currentHumanCount = count
 
         socket.emit("countFeed", count)
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')

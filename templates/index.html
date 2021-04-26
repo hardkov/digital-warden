@@ -26,13 +26,18 @@
     <script type="text/javascript" charset="utf-8">
       const socket = io();
 
-      socket.on("countFeed", (data) => {
+      socket.on("countFeed", (count) => {
         const element = document.getElementById("humanCount");
-        element.textContent = "Intruders count: " + data;
+        element.textContent = "Intruders count: " + count;
       });
 
-      socket.on("imgFeed", () => {
-        console.log("Received new image");
+      socket.on("imgFeed", (img) => {
+        console.log("imgFeed");
+        const imgToInsert = new Image();
+        imgToInsert.src = img;
+        const imageList = document.getElementById("lastEvents");
+        imageList.lastChild.remove();
+        imageList.insertBefore(imgToInsert, imageList.children[1]);
       });
     </script>
   </head>
@@ -79,7 +84,13 @@
         <div class="row">
           <div class="col-sm-3"><h2>Last events:</h2></div>
         </div>
-        <div class="row">blablablablalb</div>
+        <div id="lastEvents" class="row">
+          <img class="p-2" src="static/leaves.jpg" width="20%" />
+          <img class="p-2" src="static/leaves.jpg" width="20%" />
+          <img class="p-2" width="20%" />
+          <img class="p-2" width="20%" />
+          <img class="p-2" width="20%" />
+        </div>
       </div>
     </main>
     <!-- Bootstrap core JavaScript
