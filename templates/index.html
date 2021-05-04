@@ -26,18 +26,20 @@
     <script type="text/javascript" charset="utf-8">
       const socket = io();
 
+      let insertIdx = 0;
+
       socket.on("countFeed", (count) => {
         const element = document.getElementById("humanCount");
         element.textContent = "Intruders count: " + count;
       });
 
       socket.on("imgFeed", (img) => {
-        console.log("imgFeed");
-        const imgToInsert = new Image();
-        imgToInsert.src = img;
         const imageList = document.getElementById("lastEvents");
-        imageList.lastChild.remove();
-        imageList.insertBefore(imgToInsert, imageList.children[1]);
+
+        imageList.children[insertIdx].src = `data:image/jpg;base64,${img}`;
+
+        insertIdx += 1;
+        insertIdx %= 5;
       });
     </script>
   </head>
@@ -85,8 +87,8 @@
           <div class="col-sm-3"><h2>Last events:</h2></div>
         </div>
         <div id="lastEvents" class="row">
-          <img class="p-2" src="static/leaves.jpg" width="20%" />
-          <img class="p-2" src="static/leaves.jpg" width="20%" />
+          <img class="p-2" width="20%" />
+          <img class="p-2" width="20%" />
           <img class="p-2" width="20%" />
           <img class="p-2" width="20%" />
           <img class="p-2" width="20%" />
