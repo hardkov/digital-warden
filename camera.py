@@ -1,19 +1,20 @@
 import cv2
 import base64
 import threading
+from datetime import datetime
 from time import sleep
 
-from detection import detectHuman
+from detection import detect_human
+from storage import save_frame
 
 
 socket = None
 camera = None
-capturingBlocked = False
-currentHumanCount = 0
+capturing_blocked = False
+current_human_count = 0
 
-def initializeCamera(socketio):
-    global camera
-    global socket
+def initialize_camera(socketio):
+    global camera, socket
 
     socket = socketio
 
@@ -21,37 +22,38 @@ def initializeCamera(socketio):
     if not camera.isOpened():
         camera = cv2.VideoCapture(1)
 
-def closeCamera():
+def close_camera():
     camera.release()
     cv2.destroyAllWindows()
 
-def unlockCapture(timeout):
-    global capturingBlocked
+def unlock_capture(timeout):
+    global capturing_blocked
 
     sleep(timeout)
-    capturingBlocked = False
+    capturing_blocked = False
 
 def gen_frames():
-    global currentHumanCount, capturingBlocked
+    global current_human_count, capturing_blocked
 
     while True:
         success, frame = camera.read()
         if not success:
             break
         
-        frame, count = detectHuman(frame)
+        frame, count = detect_human(frame)
         
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
-
-        if count > currentHumanCount and not capturingBlocked:
-            capturingBlocked = True
+        buffer_encoded = base64.b64encode(buffer).decode("utf-8")
+        
+        if count > current_human_count and not capturing_blocked:
+            capturing_blocked = True
             
-            socket.emit("imgFeed", base64.b64encode(buffer).decode("utf-8"))
-            
-            threading.Thread(target=unlockCapture, args=(2, )).start()
+            socket.emit("imgFeed", buffer_encoded)
+            save_frame(datetime.now(), buffer_encoded)  
+            threading.Thread(target=unlock_capture, args=(2, )).start()
 
-        currentHumanCount = count
+        current_human_count = count
 
         socket.emit("countFeed", count)
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')

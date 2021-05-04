@@ -3,7 +3,7 @@ import cv2
  
 classifier = cv2.CascadeClassifier('classifiers/haarcascade_frontalface_default.xml')
 
-def detectHuman(frame):
+def detect_human(frame):
     frame = cv2.resize(frame, (640, 480))
 
     gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
