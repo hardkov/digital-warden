@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block logic %}
+<!-- <script type="text/javascript" charset="utf-8">
+  const fetchData = async () => {
+    const response = await fetch("/saved");
+
+    console.log(await response.json());
+  };
+
+  fetchData();
+</script> -->
+{% endblock %} {% block content %}
+<p>Data storage</p>
+<div class="card-deck">
+{% for frame in saved_frames %}
+  <div class="card">
+    <img class="card-img-top" src={{ frame.src }} width="20%" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <p class="card-text"><small class="text-muted"> 3 mins ago</small></p>
+    </div>
+  </div>
+{% endfor %} 
+</div>
+{% endblock %}
