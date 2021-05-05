@@ -21,27 +21,23 @@
   });
 </script>
 {% endblock %} {% block content %}
-<main role="main" class="container">
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6">
-        <h2 id="humanCount"></h2>
-        <img src="{{ url_for('video_feed') }}" width="100%" />
-      </div>
-      <div class="col-sm-3"></div>
-    </div>
-    <div class="row">
-      <div class="col-sm-3"><h2>Last events:</h2></div>
-    </div>
-    <div id="lastEvents" class="row">
-      {% for frame in saved_frames %}
-        <img class="p-2" width="20%" src="{{ frame.src }}" />
-      {% endfor %}
-      {% for _ in range(frames_limit - frames_count) %}
-        <img class="p-2" width="20%" />
-      {% endfor %}
-    </div>
+<div class="row">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-6">
+    <h2 id="humanCount"></h2>
+    <img src="{{ url_for('video_feed') }}" width="100%" />
   </div>
-</main>
+  <div class="col-sm-3"></div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><h2>Last events:</h2></div>
+</div>
+<div id="lastEvents" class="row">
+  {% for frame in saved_frames %}
+    <img class="p-2" width="20%" src="{{ frame.src }}" />
+  {% endfor %}
+  {% for _ in range(frames_limit - frames_count) %}
+    <img class="p-2" width="20%" />
+  {% endfor %}
+</div>
 {% endblock %}

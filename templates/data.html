@@ -1,25 +1,32 @@
-{% extends "base.html" %} {% block logic %}
-<!-- <script type="text/javascript" charset="utf-8">
-  const fetchData = async () => {
-    const response = await fetch("/saved");
+{% extends "base.html" %} 
+{% block content %}
 
-    console.log(await response.json());
-  };
+{% for hour_frames in frames_by_hours %}
+<h2>{{ hour_frames.hour }}</h2>
+<div class="card-columns">
+  {% for frame in hour_frames.frames %}
+    <div class="card">
+      <img class="card-img-top" src={{ frame.src }} width="20%" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Date</h5>
+        <p class="card-text"><small class="text-muted">How long ago</small></p>
+      </div>
+    </div>
+  {% endfor %} 
+</div>
+{% endfor %} 
 
-  fetchData();
-</script> -->
-{% endblock %} {% block content %}
-<p>Data storage</p>
-<div class="card-deck">
+
+
+<!-- <div class="card-columns">
 {% for frame in saved_frames %}
   <div class="card">
     <img class="card-img-top" src={{ frame.src }} width="20%" alt="Card image cap">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      <p class="card-text"><small class="text-muted"> 3 mins ago</small></p>
+      <h5 class="card-title">Date</h5>
+      <p class="card-text"><small class="text-muted">How long ago</small></p>
     </div>
   </div>
 {% endfor %} 
-</div>
+</div> -->
 {% endblock %}
