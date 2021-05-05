@@ -7,7 +7,6 @@ from time import sleep
 from detection import detect_human
 from storage import save_frame
 
-
 socket = None
 camera = None
 capturing_blocked = False

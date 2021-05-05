@@ -2,7 +2,9 @@
 <script type="text/javascript" charset="utf-8">
   const socket = io();
 
-  let insertIdx = 0;
+  const framesLimit = "{{ frames_limit }}" 
+  let insertIdx = "{{ frames_count }}";
+  insertIdx %= framesLimit
 
   socket.on("countFeed", (count) => {
     const element = document.getElementById("humanCount");
@@ -15,7 +17,7 @@
     imageList.children[insertIdx].src = `data:image/jpg;base64,${img}`;
 
     insertIdx += 1;
-    insertIdx %= 5;
+    insertIdx %= framesLimit;
   });
 </script>
 {% endblock %} {% block content %}
@@ -33,11 +35,12 @@
       <div class="col-sm-3"><h2>Last events:</h2></div>
     </div>
     <div id="lastEvents" class="row">
-      <img class="p-2" width="20%" />
-      <img class="p-2" width="20%" />
-      <img class="p-2" width="20%" />
-      <img class="p-2" width="20%" />
-      <img class="p-2" width="20%" />
+      {% for frame in saved_frames %}
+        <img class="p-2" width="20%" src="{{ frame.src }}" />
+      {% endfor %}
+      {% for _ in range(frames_limit - frames_count) %}
+        <img class="p-2" width="20%" />
+      {% endfor %}
     </div>
   </div>
 </main>
