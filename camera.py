@@ -1,8 +1,7 @@
 import cv2
 import base64
 import threading
-from datetime import datetime
-from time import sleep
+import time
 
 from detection import detect_human
 from storage import save_frame
@@ -28,7 +27,7 @@ def close_camera():
 def unlock_capture(timeout):
     global capturing_blocked
 
-    sleep(timeout)
+    time.sleep(timeout)
     capturing_blocked = False
 
 def gen_frames():
@@ -41,7 +40,7 @@ def gen_frames():
         
         frame, count = detect_human(frame)
         
-        ret, buffer = cv2.imencode('.jpg', frame)
+        _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         buffer_encoded = base64.b64encode(buffer).decode("utf-8")
         
@@ -49,7 +48,7 @@ def gen_frames():
             capturing_blocked = True
             
             socket.emit("imgFeed", buffer_encoded)
-            save_frame(datetime.now(), buffer_encoded)  
+            save_frame(time.time(), buffer_encoded)  
             threading.Thread(target=unlock_capture, args=(2, )).start()
 
         current_human_count = count

@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 
 from camera import initialize_camera, close_camera, gen_frames
 from storage import get_saved_frames, close_database, initialize_database
-from helpers import get_frames_by_hours
+from helpers import parse_frames
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -15,9 +15,9 @@ def video_feed():
 @app.route('/data')
 def data():
     saved_frames = get_saved_frames(-1)
-    frames_by_hours = get_frames_by_hours(saved_frames)
+    frames_by_days = parse_frames(saved_frames)
 
-    return render_template('data.html', frames_by_hours=frames_by_hours)
+    return render_template('data.html', frames_by_days=frames_by_days)
 
 @app.route('/')
 def index():
