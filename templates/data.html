@@ -11,11 +11,12 @@ frames_by_days %}
       alt="Card image cap"
     />
     <div class="card-body">
-      <h5 class="card-title">Date</h5>
-      <p class="card-text"><small class="text-muted">How long ago</small></p>
+      <h5 class="card-title">{{ frame.diff }} Ago</h5>
+      <p class="card-text">
+        <small class="text-muted">{{ day_frames.date }} </small>
+      </p>
     </div>
   </div>
   {% endfor %}
 </div>
-{% endfor %}
-{% endblock %}
+{% endfor %} {% endblock %}
