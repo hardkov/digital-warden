@@ -31,7 +31,7 @@ if __name__ == '__main__':
     initialize_database()
     initialize_camera(socketio)
 
-    socketio.run(app)
+    socketio.run(app, host="0.0.0.0")
 
     close_camera()
     close_database()
