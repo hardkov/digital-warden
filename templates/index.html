@@ -14,7 +14,7 @@
   socket.on("imgFeed", (img) => {
     const imageList = document.getElementById("lastEvents");
 
-    imageList.children[insertIdx].src = `data:image/jpg;base64,${img}`;
+    imageList.children[insertIdx].children[0].src = `data:image/jpg;base64,${img}`;
 
     insertIdx += 1;
     insertIdx %= framesLimit;
@@ -32,12 +32,18 @@
 <div class="row">
   <div class="col-sm-3"><h2>Last events:</h2></div>
 </div>
+<div class="container-fluid">
 <div id="lastEvents" class="row">
   {% for frame in saved_frames %}
-    <img class="p-2" width="20%" src="{{ frame.src }}" />
+  <div class="p-2 col-sm-2">
+      <img width="100%" src="{{ frame.src }}" />
+  </div>
   {% endfor %}
   {% for _ in range(frames_limit - frames_count) %}
-    <img class="p-2" width="20%" />
+  <div class="p-2 col-sm-2">
+      <img width="100%" />
+  </div>
   {% endfor %}
+</div>
 </div>
 {% endblock %}
