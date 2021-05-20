@@ -2,9 +2,9 @@
 <script type="text/javascript" charset="utf-8">
   const socket = io();
 
-  const framesLimit = "{{ frames_limit }}" 
+  const framesLimit = "{{ frames_limit }}";
   let insertIdx = "{{ frames_count }}";
-  insertIdx %= framesLimit
+  insertIdx %= framesLimit;
 
   socket.on("countFeed", (count) => {
     const element = document.getElementById("humanCount");
@@ -14,7 +14,9 @@
   socket.on("imgFeed", (img) => {
     const imageList = document.getElementById("lastEvents");
 
-    imageList.children[insertIdx].children[0].src = `data:image/jpg;base64,${img}`;
+    imageList.children[
+      insertIdx
+    ].children[0].src = `data:image/jpg;base64,${img}`;
 
     insertIdx += 1;
     insertIdx %= framesLimit;
@@ -32,18 +34,15 @@
 <div class="row">
   <div class="col-sm-3"><h2>Last events:</h2></div>
 </div>
-<div class="container-fluid">
-<div id="lastEvents" class="row">
+<div id="lastEvents" class="row d-flex justify-content-center">
   {% for frame in saved_frames %}
   <div class="p-2 col-sm-2">
-      <img width="100%" src="{{ frame.src }}" />
+    <img width="100%" src="{{ frame.src }}" />
   </div>
-  {% endfor %}
-  {% for _ in range(frames_limit - frames_count) %}
+  {% endfor %} {% for _ in range(frames_limit - frames_count) %}
   <div class="p-2 col-sm-2">
-      <img width="100%" />
+    <img width="100%" />
   </div>
   {% endfor %}
-</div>
 </div>
 {% endblock %}
