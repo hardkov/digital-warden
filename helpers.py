@@ -21,20 +21,3 @@ def parse_frames(frames):
 
   return frames_by_date
 
-
-  # current_hour = get_hour(frames[0])
-  # current_idx = 0
-  # frames_by_hours = [{"hour": current_hour, "frames": []}]
-
-  # for frame in frames:
-  #   hour = get_hour(frame)
-
-  #   if hour == current_hour:
-  #     frames_by_hours[current_idx]['frames'].append(frame)
-  #   else:
-  #     frames_by_hours.append({"hour": hour, "frames": [frame]})
-  #     current_idx += 1
-  #     current_hour = hour
-
-  # return frames_by_hours
-
